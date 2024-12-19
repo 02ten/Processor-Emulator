@@ -1,9 +1,9 @@
 public class Instructions {
 
-    private final int opcode;
-    private final int dest;
-    private final int src1;
-    private final int src2;
+    private int opcode;
+    private int dest;
+    private int src1;
+    private int src2;
 
     public Instructions(int opcode, int dest, int src1, int src2) {
         this.opcode = opcode;
@@ -29,15 +29,19 @@ public class Instructions {
     }
 
     public static Instructions fromMachineCode(int machineCode) {
-        int opcode = (machineCode >> 24) & 0xFF;
-        int dest = (machineCode >> 16) & 0xFF;
-        int src1 = (machineCode >> 8) & 0xFF;
-        int src2 = machineCode & 0xFF;
+        //TODO Расширить адреса
+
+        int opcode = (machineCode >> 12) & 0x7;
+        int dest = (machineCode >> 8) & 0xF;
+        int src1 = (machineCode >> 4) & 0xF;
+        int src2 = machineCode & 0xF;
+        System.out.printf("Операция в бинарном коде: %4s%n", Integer.toBinaryString(opcode));
+        System.out.printf("Адрес назначения в бинарном коде: %4s%n", Integer.toBinaryString(dest));
+        System.out.printf("Первый адрес в бинарном коде: %4s%n", Integer.toBinaryString(src1));
+        System.out.printf("Второй адрес в бинарном коде: %4s%n", Integer.toBinaryString(src2));
         return new Instructions(opcode, dest, src1, src2);
     }
 
-    public int toMachineCode() {
-        return (opcode << 24) | (dest << 16) | (src1 << 8) | src2;
-    }
+
 
 }

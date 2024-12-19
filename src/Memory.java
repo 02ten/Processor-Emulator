@@ -11,15 +11,20 @@ public class Memory {
         return dataMemory[address];
     }
 
+    public int getSizeDataMemory(){
+        return dataMemory.length-1;
+    }
+
     public void writeData(int address, int value) {
         dataMemory[address] = value;
     }
 
-    public int readInstruction(int address) {
-        return instructionMemory[address];
-    }
-    //TODO Каким-то образом избавится от адресса напрямую
+
     public void writeInstruction(int address, int machineCode) {
         instructionMemory[address] = machineCode;
+    }
+
+    public Instructions fromMachineCodeToInstruction(int pc){
+        return Instructions.fromMachineCode(instructionMemory[pc]);
     }
 }

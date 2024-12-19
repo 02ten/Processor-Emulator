@@ -1,47 +1,55 @@
 import java.util.Arrays;
-import java.util.Map;
 
 public class Emulator {
-    private static final int NUM_REGISTERS = 8;
-    private int[] registers = new int[NUM_REGISTERS];
+    private static final int NUM_REGISTERS = 4;
+    private final int[] registers = new int[NUM_REGISTERS];
     private int programCounter = 0;
     private boolean running = true;
-    private Memory memory;
+    private final Memory memory;
 
     public Emulator(Memory memory) {
         this.memory = memory;
     }
-    //TODO Пофиксить
     public void execute() {
         while (running) {
-            Instructions instruction = memory.readInstruction(programCounter++);
+            Instructions instruction = memory.fromMachineCodeToInstruction(programCounter);
             executeInstruction(instruction);
+            programCounter++;
         }
     }
 
     private void executeInstruction(Instructions instruction) {
-        String operation = instruction.getOpcode();
+        int operation = instruction.getOpcode();
         int dest = instruction.getDest();
         int src1 = instruction.getSrc1();
         int src2 = instruction.getSrc2();
-
+        System.out.println(operation);
+        System.out.printf("Программный счетчик %d%n",programCounter);
         switch (operation) {
-            case "ADD":
+            case 0:
                 registers[dest] = registers[src1] + registers[src2];
                 break;
-            case "LOAD":
-                registers[dest] = memory.readData(src1);
+            case 1:
+                registers[dest] = memory.readData(registers[1]);
                 break;
-            case "STORE":
+            case 2:
                 memory.writeData(src1, registers[dest]);
                 break;
-            case "INC":
+            case 3:
+                programCounter = dest-1;
+                break;
+            case 4:
+                if(registers[src1] == registers[src2]){
+                    programCounter++;
+                }
+                break;
+            case 5:
+                registers[dest] = memory.getSizeDataMemory();
+                break;
+            case 6:
                 registers[dest]++;
                 break;
-            case "JUMP":
-                programCounter = dest;
-                break;
-            case "STOP":
+            case 7:
                 running = false;
                 break;
             default:
