@@ -44,12 +44,9 @@ public class Emulator {
                 }
                 break;
             case 5:
-                registers[dest] = memory.getSizeDataMemory();
-                break;
-            case 6:
                 registers[dest]++;
                 break;
-            case 7:
+            case 6:
                 running = false;
                 break;
             default:

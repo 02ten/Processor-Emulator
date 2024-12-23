@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Memory {
     private final int[] dataMemory;
     private final int[] instructionMemory;
@@ -11,17 +13,16 @@ public class Memory {
         return dataMemory[address];
     }
 
-    public int getSizeDataMemory(){
-        return dataMemory.length-1;
-    }
 
     public void writeData(int address, int value) {
         dataMemory[address] = value;
     }
 
 
-    public void writeInstruction(int address, int machineCode) {
-        instructionMemory[address] = machineCode;
+    public void writeInstruction(List<Integer> instructions) {
+        for(var i = 0; i < instructions.size(); i++){
+            instructionMemory[i]= instructions.get(i);
+        }
     }
 
     public Instructions fromMachineCodeToInstruction(int pc){

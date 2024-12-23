@@ -1,5 +1,10 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Memory memory = new Memory(5, 256);
 
         memory.writeData(0, 5);
@@ -13,18 +18,11 @@ public class Main {
         //Регистр 1 - Выделен под инкремент
         //Регистр 2 - Выделен под размер массива
         //Регистр 3 - Выделен под след. элемент массива
-        //TODO Из файла. Добавить метки
-        memory.writeInstruction(0, assembler.assemble("LOAD R0 0 0"));
-        memory.writeInstruction(1, assembler.assemble("INC R1 0 0"));
-        memory.writeInstruction(2, assembler.assemble("LOAD_SIZE R2 0 0"));
-        memory.writeInstruction(3, assembler.assemble("LOAD R3 1 0"));
-        memory.writeInstruction(4, assembler.assemble("ADD R0 R0 R3"));
-        memory.writeInstruction(5, assembler.assemble("INC R1 0 0"));
-        memory.writeInstruction(6, assembler.assemble("JUMP_IF 2 R1 R2"));
-        memory.writeInstruction(7, assembler.assemble("JUMP 3 0 0"));
-        memory.writeInstruction(8, assembler.assemble("STORE R0 4 0"));
-        memory.writeInstruction(9, assembler.assemble("STOP 0 0 0"));
-
+        //Регистр 4 - Выделен под флаг
+        //TODO Из файла. Добавить метки start и End для цикла
+        List<String> lines = Files.readAllLines(Paths.get("src/commands.txt"));  // Чтение всех строк из файла
+        List<Integer> binaryInstructions = assembler.assemble(lines);
+        memory.writeInstruction(binaryInstructions);
 
         Emulator emulator = new Emulator(memory);
         emulator.execute();
