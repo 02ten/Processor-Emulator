@@ -30,7 +30,11 @@ public class Emulator {
                 registers[dest] = registers[src1] + registers[src2];
                 break;
             case 1:
-                registers[dest] = memory.readData(registers[1]);
+                if(src1 >> 3 == 1){
+                    registers[dest] = memory.readData(registers[src1 & 0xb0111]);
+                }else {
+                    registers[dest] = memory.readData(src1 & 0xb0111);
+                }
                 break;
             case 2:
                 memory.writeData(src1, registers[dest]);
@@ -40,7 +44,7 @@ public class Emulator {
                 break;
             case 4:
                 if(registers[src1] == registers[src2]){
-                    programCounter++;
+                    programCounter = dest-1;
                 }
                 break;
             case 5:

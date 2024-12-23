@@ -7,18 +7,15 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Memory memory = new Memory(5, 256);
 
-        memory.writeData(0, 5);
-        memory.writeData(1, 10);
-        memory.writeData(2, 15);
-        memory.writeData(3, 20);
-        memory.writeData(4, 0); // Result
+        memory.writeData(0, 2);
+        memory.writeData(1, 15);
+        memory.writeData(2, 0); // Result
 
         Assembler assembler = new Assembler();
         //Регистр 0 - Выделен под промежуточное значение
         //Регистр 1 - Выделен под инкремент
         //Регистр 2 - Выделен под размер массива
         //Регистр 3 - Выделен под след. элемент массива
-        //Регистр 4 - Выделен под флаг
         //TODO Из файла. Добавить метки start и End для цикла
         List<String> lines = Files.readAllLines(Paths.get("src/commands.txt"));  // Чтение всех строк из файла
         List<Integer> binaryInstructions = assembler.assemble(lines);
